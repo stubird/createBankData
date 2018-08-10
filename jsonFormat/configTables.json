@@ -1,0 +1,61 @@
+{
+    "tables": {
+        "table1": {
+            "field": {
+              "CustId": {
+                "type": "Integer",
+                "createMod":"",
+                "constraint":{"floor":"10000","upper":"20000"}
+              },
+              "TrxDt": {
+                "type": "Date",
+                "createMod":"",
+                "constraint": {"basedate":"1999-01-01","offset":"86400*(365*18+4)"}
+              },
+              "ProId": {
+                "type": "String",
+                "createMod":"",
+                "constraint": {"strset":["dog","bird","monkey","norm"]}
+              }
+            },
+
+            "property": {
+                "lines": 15
+            },
+
+            "constraint": {
+            }
+
+        },
+        "table2": {
+            "field": {
+                "CustId": {
+                    "type": "String",
+                    "createMod":"",
+                    "constraint": ""
+                },
+                "Aum": {
+                    "type": "Double",
+                    "createMod":"",
+                    "constraint": {"floor":"231.23","upper":"3332.543"}
+                },
+                "AumDate": {
+                    "type": "Date",
+                    "createMod":"",
+                    "constraint": {"basedate":"2020-01-01","offset":"86400*(365*18+4)"}
+                }
+            },
+
+            "property": {
+                "lines": 10
+            },
+
+            "constraint": {
+            }
+        }
+    },
+    "constraint": {
+        "cons1":"",
+        "cons2":""
+    }
+}
