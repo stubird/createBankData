@@ -6,11 +6,16 @@ def findplay():
 
 sys.path.append('../')
 
-from fullDataCreator import test
+from createBankData import test
 
 
 def theGood1():
-    print("wawawa12 aaaa")
+    array = ["I","AM","a","good","man"]
+    def method():
+        print(array[0])
+        del array[0]
+        print("wawawa12 aaaa")
+    return  method
 
 class aaa(object):
     @classmethod
@@ -18,8 +23,10 @@ class aaa(object):
         print("wawawa aaaa")
 
 if __name__ == "__main__":
-    getattr(test,"theGood1")()
-
-    af = compile("a = 12;b=234","<string>","exec")
-    exec(af)
-    print(a,b)
+    met = theGood1()
+    met()
+    met()
+    met2 = theGood1()
+    met2()
+    met2()
+    met()

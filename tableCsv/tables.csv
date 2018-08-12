@@ -1,0 +1,17 @@
+table1,custid,String
+table1,tradate,Date,2019-01-01~2022-12-01
+table1,amt,Integer,234~6643
+table1,amt1,Double,123~232
+table1,amt2,Double,23234~324442
+
+table2,tcustid,String
+table2,ttradate,Date,2011-01-01~2018-12-01
+table2,bamt,Integer,234~6643
+table2,bamt1,Double,123~232
+table2,bamt2,Double,23234~324442
+
+table3,vcustid,String
+table3,vtradate,Date,2017-01-01~2018-12-01
+table3,bbs2,Integer,234~6643
+table3,bbs1,Double,123~232
+table3,bbs,Double,23234~324442

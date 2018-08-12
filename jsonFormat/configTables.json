@@ -15,12 +15,12 @@
               "ProId": {
                 "type": "String",
                 "createMod":"",
-                "constraint": {"strset":["dog","bird","monkey","norm"]}
+                "constraint": {"strset":["dog","bird","monkey","norm"],"distinct":"True"}
               }
             },
 
             "property": {
-                "lines": 15
+                "lines": 50
             },
 
             "constraint": {
@@ -47,7 +47,7 @@
             },
 
             "property": {
-                "lines": 10
+                "lines": 40
             },
 
             "constraint": {
