@@ -46,7 +46,7 @@ class excuteFunc(object):
         return method
 
     @classmethod
-    def DoubleMethod(self, x = "", constraint = {}):
+    def FloatMethod(self, x = "", constraint = {}):
         def method(x):
             random.seed(x * SEED_NUM + time.time())
             floor = float(eval(constraint["floor"])) if "floor" in constraint else -(sys.maxsize-1)/2
@@ -83,7 +83,49 @@ class excuteFunc(object):
 
         return method
 
-def run(t1, context_string, configPath = './jsonFormat/tables.json'):
+    @classmethod
+    def ID_Method(self, x = "", constraint = {}):
+        if "lenOfId" in constraint:
+            lenOfId = constraint["lenOfId"]
+        else:
+            lenOfId = 8
+
+        def method(x):
+            random.seed(x * SEED_NUM + time.time())
+            IdStr = ""
+            for i in range(lenOfId):
+                IdStr += str(random.randint(0,9))
+            return IdStr
+
+        return method
+
+    @classmethod
+    def DATEUSER_Method(self, x = "", constraint = {}):
+        if constraint["floor"] == "":
+            floor = datetime.strptime("2000-01-01", "%Y-%m-%d")
+        else:
+            floor = datetime.strptime(constraint["floor"], "%Y-%m-%d")
+
+        if constraint["upper"] == "":
+            upper = datetime.strptime("2010-01-01", "%Y-%m-%d")
+        else:
+            upper = datetime.strptime(constraint["upper"], "%Y-%m-%d")
+
+        def method(x):
+            random.seed(x * SEED_NUM + time.time())
+            timeoffset = timedelta(seconds=
+                random.randint(0, int((upper - floor).total_seconds())))
+
+            if constraint["datatype"].upper() == "DATE":
+                return floor + timeoffset
+            else:
+                return str(floor + timeoffset)
+
+        return method
+
+
+
+def run(t1, context_string, configPath = './jsonFormat/ACTCLR.json'):
     spark = SQLContext(SparkContext.getOrCreate())
 
     hive = HiveContext(SparkContext.getOrCreate())
@@ -105,11 +147,29 @@ def run(t1, context_string, configPath = './jsonFormat/tables.json'):
         df = spark.range(linenum)
 
         for fieldName,fieldProf in prof["field"].items():
-            t_type = getattr(Types, fieldProf["type"]+"Type")
-            if fieldProf["createMod"] == "":
-                udf_func = udf(getattr(excuteFunc,fieldProf["type"]+"Method")(constraint = fieldProf["constraint"]), t_type())
+            if fieldProf["type"].startswith("\"") and fieldProf["type"].endswith("\""):
+                fieldProf["type"] = fieldProf["type"][1:-1]
+            if fieldProf["type"].upper().startswith("VARCHAR") or \
+                fieldProf["type"].upper().startswith("CHAR"):
+                t_type = StringType
+                baseType = "String"
+            elif fieldProf["type"].upper().startswith("DECIMAL"):
+                t_type = FloatType
+                baseType = "Float"
+            elif fieldProf["type"].upper().startswith("SMALLINT"):
+                t_type = IntegerType
+                baseType = "Integer"
+            elif fieldProf["type"].upper().startswith("DATE"):
+                t_type = DataType
+                baseType = "Date"
             else:
-                udf_func = udf(getattr(excuteFunc, fieldProf["createMod"]), t_type())
+                t_type = StringType
+                baseType = "String"
+
+            if fieldProf["createMod"] == "":
+                udf_func = udf(getattr(excuteFunc,baseType+"Method")(constraint = fieldProf["constraint"]), t_type())
+            else:
+                udf_func = udf(getattr(excuteFunc, fieldProf["createMod"].upper()+"_Method")(constraint = fieldProf["constraint"]), t_type())
 
             df = df.withColumn(fieldName, udf_func("id"))
 
@@ -118,7 +178,7 @@ def run(t1, context_string, configPath = './jsonFormat/tables.json'):
     for i,j in tables.items():
         j.show(n=100,truncate=False)
 
-    return [tables["table1"]]
+    return [tables["ACTCLR"]]
 
 if __name__ == '__main__':
     ret = run("","")

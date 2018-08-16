@@ -1,0 +1,140 @@
+{
+    "tables": {
+        "table1": {
+            "field": {
+                "custid": {
+                    "type": "String",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "tradate": {
+                    "type": "Date",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "2019-01-01",
+                        "upper": "2022-12-01"
+                    }
+                },
+                "amt": {
+                    "type": "Integer",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "234",
+                        "upper": "6643"
+                    }
+                },
+                "amt1": {
+                    "type": "Double",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "123",
+                        "upper": "232"
+                    }
+                },
+                "amt2": {
+                    "type": "Double",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "23234",
+                        "upper": "324442"
+                    }
+                }
+            },
+            "property": {
+                "lines": 50
+            },
+            "constraint": {}
+        },
+        "table2": {
+            "field": {
+                "tcustid": {
+                    "type": "String",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "ttradate": {
+                    "type": "Date",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "2011-01-01",
+                        "upper": "2018-12-01"
+                    }
+                },
+                "bamt": {
+                    "type": "Integer",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "234",
+                        "upper": "6643"
+                    }
+                },
+                "bamt1": {
+                    "type": "Double",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "123",
+                        "upper": "232"
+                    }
+                },
+                "bamt2": {
+                    "type": "Double",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "23234",
+                        "upper": "324442"
+                    }
+                }
+            },
+            "property": {
+                "lines": 50
+            },
+            "constraint": {}
+        },
+        "table3": {
+            "field": {
+                "vcustid": {
+                    "type": "String",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "vtradate": {
+                    "type": "Date",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "2017-01-01",
+                        "upper": "2018-12-01"
+                    }
+                },
+                "bbs2": {
+                    "type": "Integer",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "234",
+                        "upper": "6643"
+                    }
+                },
+                "bbs1": {
+                    "type": "Double",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "123",
+                        "upper": "232"
+                    }
+                },
+                "bbs": {
+                    "type": "Double",
+                    "createMod": "",
+                    "constraint": {
+                        "floor": "23234",
+                        "upper": "32444"
+                    }
+                }
+            },
+            "property": {
+                "lines": 50
+            },
+            "constraint": {}
+        }
+    },
+    "constraint": {}
+}

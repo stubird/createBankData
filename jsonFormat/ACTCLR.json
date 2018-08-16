@@ -1,0 +1,108 @@
+{
+    "tables": {
+        "ACTCLR": {
+            "property": {
+                "lines": 50
+            },
+            "constraint": {},
+            "field": {
+                "LVL_1_BCH_IDN": {
+                    "type": "CHAR(20)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "LVL_1_BCH_NME": {
+                    "type": "VARCHAR(70)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "LVL_2_BCH_IDN": {
+                    "type": "CHAR(20)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "LVL_2_BCH_NME": {
+                    "type": "VARCHAR(70)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "BRANCH_ID": {
+                    "type": "VARCHAR",
+                    "createMod": "ID",
+                    "constraint": {"lenOfId" : 12}
+                },
+                "ACT_IDN_SKY": {
+                    "type": "VARCHAR",
+                    "createMod": "ID",
+                    "constraint": {"lenOfId" : 5}
+                },
+                "ACT_CGY_CDE": {
+                    "type": "CHAR(6)",
+                    "createMod": "",
+                    "constraint": {"strset" : ["KKK","BBB","EEE","SSS"]}
+                },
+                "CRY_CDE": {
+                    "type": "CHAR(3)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "ACCT_DQT_LVL_CDE": {
+                    "type": "CHAR(3)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "ACT_STS": {
+                    "type": "VARCHAR(50)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "CSR_IDN_SKY": {
+                    "type": "CHAR(20)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "CSR_NME": {
+                    "type": "VARCHAR(70)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "SCL_SCY_NBR": {
+                    "type": "CHAR(30)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "CDT_BAL": {
+                    "type": "DECIMAL(18)",
+                    "createMod": "",
+                    "constraint": {
+                        "floor" : "10000",
+                        "upper" : "20000"}
+                },
+                "ACCT_AMT": {
+                    "type": "DECIMAL(18)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "ACCT_INT": {
+                    "type": "DECIMAL(18)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "ACCT_FEE": {
+                    "type": "DECIMAL(18)",
+                    "createMod": "",
+                    "constraint": ""
+                },
+                "DQT_STT_DTE": {
+                    "type": "VARCHAR",
+                    "createMod": "DateUser",
+                    "constraint": {
+                        "datatype" : "String",
+                        "floor" : "2005-02-21",
+                        "upper" : "2010-01-01"}
+                }
+            }
+        }
+    },
+    "constraint": {}
+}
