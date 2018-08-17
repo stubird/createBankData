@@ -1,7 +1,7 @@
 import json
 import sys
 
-def csvToJson(file = "./tableCsv/tmp.csv"):
+def csvToJson(file = "./tableCsv/UserId.csv"):
     with open(file) as f_op:
         jsonStr = {
             "tables":{},
@@ -25,13 +25,13 @@ def csvToJson(file = "./tableCsv/tmp.csv"):
             if "field" not in jsonStr["tables"][line[0]]:
                 jsonStr["tables"][line[0]]["field"] = {}
 
-            jsonStr["tables"][line[0]]["field"][line[1]] = {"type": line[2],
+            jsonStr["tables"][line[0]]["field"][line[1]] = {
+                    "type": line[2],
                     "createMod":"",
                     "constraint":""
                 }
 
-
-        with open("./jsonFormat/ACTCLR11.json",'w+') as tj:
+        with open("./jsonFormat/UserId.json",'w+') as tj:
             json.dump(jsonStr,tj,indent=4)
 
 if __name__ == "__main__":
