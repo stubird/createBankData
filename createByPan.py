@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
-
+import os
 import json
 
 def UserId_Method(lens = 10, num = 100):
@@ -96,12 +96,12 @@ def createTable(jsonobj, initDf = None,store = None):
 
     for name,prof in jsonobj["tables"].items():
         #parse table
-        print("prof",name,prof)
+        #print("prof",name,prof)
 
-        linenum = prof["property"]["lines"]
+        linenum = eval(prof["property"]["lines"])
 
         if initDf is not None:
-            df = initDf
+            df = initDf.loc[:]
         else:
             df = pd.DataFrame()
 
@@ -113,7 +113,12 @@ def createTable(jsonobj, initDf = None,store = None):
                 continue
             #particular function
             if fieldProf["createMod"].upper() == "ID":
-                df[fieldName] = UserId_Method(num=linenum)
+                if "length" in fieldProf["constraint"]:
+                    length = eval(fieldProf["constraint"]["length"])
+                else:
+                    length = 10
+
+                df[fieldName] = UserId_Method(lens=length, num=linenum)
                 continue
 
             if fieldProf["createMod"].upper() == "NAME":
@@ -134,10 +139,12 @@ def createTable(jsonobj, initDf = None,store = None):
 
             if fieldProf["type"].upper().startswith("VARCHAR") or \
                 fieldProf["type"].upper().startswith("CHAR"):
-                df[fieldName] = Name_Method(5,num=linenum)
-            elif fieldProf["type"].upper().startswith("DECIMAL"):
+                namelen = eval(fieldProf["constraint"]["length"]) if "length" in fieldProf["constraint"] else 5
+                df[fieldName] = Name_Method(namelen,num=linenum)
+            elif fieldProf["type"].upper().startswith("DECIMAL") or fieldProf["type"].upper().startswith("\"DECIMAL") or\
+                fieldProf["type"].upper().startswith("NUMBER") or fieldProf["type"].upper().startswith("\"NUMBER"):
                 df[fieldName] = FloatMethod(fieldProf["constraint"],num=linenum)
-            elif fieldProf["type"].upper().startswith("SMALLINT"):
+            elif fieldProf["type"].upper().startswith("SMALLINT") or "INTEGER" in fieldProf["type"].upper():
                 df[fieldName] = IntegerMethod(fieldProf["constraint"],num=linenum)
             elif fieldProf["type"].upper().startswith("DATE"):
                 df[fieldName] = DateMethod(fieldProf["constraint"],num=linenum)
@@ -146,22 +153,24 @@ def createTable(jsonobj, initDf = None,store = None):
 
         #print(df)
         if store is not None:
-            df.to_csv(store)
+            df.to_csv(store, index=False)
         return df
 
 
-def createMonthSlice(table, fielist, dateCol, datarecord = "DataTime", time_gap = ["2017-01","2017-3"]):
+def createMonthSlice(table, fielist, dateCol, datarecord = "DataTime",initdf = None, time_gap = ["2017-01","2017-12"]):
     # load json obj from file
-    with open("./jsonFormat/ACTCLR.json") as cfgPath:
+    with open("./jsonFormat/{}.json".format(table)) as cfgPath:
         jsonobj = json.load(cfgPath)
 
-    df1 = createTable(jsonobj)
+    if initdf is not None:
+        df1 = initdf
+    else:
+        df1 = createTable(jsonobj)
 
     dfs = []
 
     start = datetime.strptime(time_gap[0], "%Y-%m")
     end = datetime.strptime(time_gap[1], "%Y-%m")
-
 
     loops = 12*end.year + end.month - 12*start.year - start.month + 1
 
@@ -179,7 +188,7 @@ def createMonthSlice(table, fielist, dateCol, datarecord = "DataTime", time_gap 
         floor = str((start + relativedelta(months=i)).date())
         upper = str((start + relativedelta(months=i+1,days=-1)).date())
 
-        print("i:{},upper:{},floor:{}".format(i,upper,floor))
+        #print("i:{},upper:{},floor:{}".format(i,upper,floor))
 
         jsonobj["tables"][table]["field"][dateCol]["constraint"] = {"floor": floor, "upper": upper}
         jsonobj["tables"][table]["field"][datarecord]["constraint"]["strset"] = [floor[:7]]
@@ -190,8 +199,8 @@ def createMonthSlice(table, fielist, dateCol, datarecord = "DataTime", time_gap 
 
     print("len ret ",len(ret),"dfs:",len(dfs))
     for i in dfs[1:]:
-        print(i)
-        print("i",len(i))
+        #print(i)
+        #print("i",len(i))
         ret = ret.append(i)
 
     print("len2 ret ",len(ret))
@@ -199,4 +208,36 @@ def createMonthSlice(table, fielist, dateCol, datarecord = "DataTime", time_gap 
 
 if __name__ == '__main__':
 
-    print(createMonthSlice("ACTCLR",['BRANCH_ID','ACT_IDN_SKY','ACT_CGY_CDE','CRY_CDE'],"DQT_STT_DTE"))
+    """
+    #card and person relationship
+    with open("./jsonFormat/CADACT.json") as CADACT:
+        jsonobj = json.load(CADACT)
+        df = createTable(jsonobj)
+        print(df)
+        if os.path.exists("./datastore/CADACT.csv") is not True:
+            with open("./datastore/CADACT.csv","w+") as CADACT_DATA:
+                df.to_csv(CADACT_DATA,index=False)
+
+    """
+
+    with open("./jsonFormat/FSC_PARTY_DIM.json") as CADACT:
+        jsonobj = json.load(CADACT)
+        createTable(jsonobj,store="./datastore/FSC_PARTY_DIM.csv")
+    pass
+
+    """
+    #ACTCLR
+
+    df_ACTCLR = df.loc[:,["ACT_IDN_SKY","SCL_SCY_NBR_TXT","CSR_IDN_SKY","CSR_NME"]]
+
+    df_ACTCLR.rename(columns={"SCL_SCY_NBR_TXT":"SCL_SCY_NBR"}, inplace=True)
+
+    df_ACTCLR = createMonthSlice("ACTCLR",["ACT_IDN_SKY","SCL_SCY_NBR","CSR_IDN_SKY","CSR_NME"],"DQT_STT_DTE",initdf=df_ACTCLR)
+
+    with open("./datastore/ACTCLR.csv", 'w+') as ACT:
+        df_ACTCLR.to_csv(ACT,index=False)
+    """
+
+    #CADTRN
+
+

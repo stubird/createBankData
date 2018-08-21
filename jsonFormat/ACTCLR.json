@@ -2,7 +2,7 @@
     "tables": {
         "ACTCLR": {
             "property": {
-                "lines": 50
+                "lines": "1000"
             },
             "constraint": {},
             "field": {
@@ -95,7 +95,7 @@
                 },
                 "DQT_STT_DTE": {
                     "type": "VARCHAR",
-                    "createMod": "DateUser",
+                    "createMod": "Date",
                     "constraint": {
                         "datatype" : "String",
                         "floor" : "2005-02-21",
